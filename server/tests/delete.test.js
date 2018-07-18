@@ -3,7 +3,7 @@ var request = require("supertest");
 
 var {app} = require("./../app");
 var {Todo} = require("./../model/todo");
-
+const _ = require('lodash')
 
 var id  = "5b4f1505a0b83c7693c3d43b";
 

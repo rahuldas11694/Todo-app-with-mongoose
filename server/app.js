@@ -4,7 +4,9 @@ var express 	= require('express'),
 var {mongoose} 	= require('./db/mongoose'),
 	{Todo} 		= require('./model/todo'),
 	{User}		= require('./model/user');
-
+var _ 			= require('lodash');
+var config = require('./config/config.js');
+console.log("env----->",env)
 const {ObjectId} = require("mongodb");
 const port  = process.env.PORT || 3000;
 var app = express();
@@ -83,6 +85,40 @@ app.delete('/todos/:id',(req, res)=> {
 		res.status(400).send(err);
 	})
 });
+
+
+app.patch('/todos/:id',(req,res)=>{
+	let id = req.params.id;
+	console.log("INSIDE #PATCH")
+	if(!ObjectId.isValid(id)){
+		return res.status(404).send({"message": "Not a valid Id"});
+	}
+
+	let body = req.body;//_.pick(req.body,['text','completed']);
+	console.log("BODY",body)
+	console.log('isBoolean-->',_.isBoolean(body.completed))
+	console.log('compeletd',(body.completed))
+	if(_.isBoolean(body.completed) && body.completed){
+		console.log("IN IF")
+		body.completedAt = new Date().getTime();
+	}else{
+		console.log("IN ELSE")
+		body.completed = false;
+		body.completedAt = null;
+	}
+
+	Todo.findOneAndUpdate(id,{$set : body}, {new:true})
+	.then((todo)=>{
+		console.log(todo);
+		if(!todo){
+			res.status(404).send({msg : "Object not found"})
+		}
+		res.send({todo});
+	})
+	.catch((err)=>{
+		res.send({error: "error"})
+	})
+})
 
 app.listen(3000,()=>{
 	console.log("Server on port 3000...",port)
