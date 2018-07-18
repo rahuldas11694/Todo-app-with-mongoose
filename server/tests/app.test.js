@@ -5,11 +5,11 @@ var {app} = require("./../app");
 var {Todo} = require("./../model/todo");
 
 
-beforeEach((done)=>{
-	Todo.remove({}).then(() => done());
-})
+// beforeEach((done)=>{
+// 	Todo.remove({}).then(() => done());
+// })
 
-describe("POST /todos,",()=> {
+/*describe("POST /todos,",()=> {
 	it("# should create a new todo", (done)=> {
 		var text = "qwe";
 
@@ -63,4 +63,32 @@ describe("POST /todos,",()=> {
 		})
 	})
 
+})*/
+
+
+describe("GET /todos/:id",()=>{
+
+	it("should give required data basd on id provided", (done)=>{
+		var id = "5b4edf060ec7c483ab7f6d66";
+
+		request(app)
+		.get(`/todos/${id.toHexString()}`)
+		.send({_id:id})
+		.expect(200)
+		.expect((res)=>{
+			console.log(res.body);
+			// expect(res.body).toBe(id);
+			// expect(res.body).toBe(1);
+
+		})
+		.end((err,res)=>{
+			console.log("err---",err,"res",res.body)
+			if(err){
+				return done(err);
+			}
+
+			done();
+		})
+
+	})
 })

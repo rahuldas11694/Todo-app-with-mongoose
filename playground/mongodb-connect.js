@@ -4,21 +4,21 @@ const {MongoClient, ObjectId} = require('mongodb');
 
 
 // start mongo $> ./mongod --dbpath ~/mongo-data/
-MongoClient.connect('mongodb://localhost:27017/TodoApp', (err,db) => {
+MongoClient.connect('mongodb://localhost:27017/TodoApp2', (err,db) => {
 	if(err)
 		return console.log("Unable to co to Db",err);
 		console.log("DB Connected");
 
 
-		/*db.collection('Todos').insertOne({
-			text : "Hello mongo",
+		db.collection('Todos').insertOne({
+			text : "testintg",
 			completed : false
 		}, (err, result)=>{
 			if(err)
 				return console.log("SOmethign went wrng", err);
 			console.log(JSON.stringify(result.ops, undefined, 2));
 
-		});*/
+		});
 
 		db.collection('Users').insertOne({
 			name : "mehi",

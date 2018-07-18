@@ -6,7 +6,7 @@ var {mongoose} 	= require('./db/mongoose'),
 	{User}		= require('./model/user');
 
 const {ObjectId} = require("mongodb");
-
+const port  = process.env.PORT;
 var app = express();
 // console.log("MONGOSE \n", mongoose);
 
