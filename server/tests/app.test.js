@@ -5,11 +5,11 @@ var {app} = require("./../app");
 var {Todo} = require("./../model/todo");
 
 
-// beforeEach((done)=>{
-// 	Todo.remove({}).then(() => done());
-// })
+beforeEach((done)=>{
+	Todo.remove({}).then(() => done());
+})
 
-/*describe("POST /todos,",()=> {
+describe("POST /todos,",()=> {
 	it("# should create a new todo", (done)=> {
 		var text = "qwe";
 
@@ -63,16 +63,16 @@ var {Todo} = require("./../model/todo");
 		})
 	})
 
-})*/
+})
 
 
-describe("GET /todos/:id",()=>{
+/*describe("GET /todos/:id",()=>{
 
 	it("should give required data basd on id provided", (done)=>{
 		var id = "5b4edf060ec7c483ab7f6d66";
 
 		request(app)
-		.get(`/todos/${id.toHexString()}`)
+		.get(`/todos/${id}`)
 		.send({_id:id})
 		.expect(200)
 		.expect((res)=>{
@@ -91,4 +91,4 @@ describe("GET /todos/:id",()=>{
 		})
 
 	})
-})
+})*/

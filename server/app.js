@@ -6,7 +6,7 @@ var {mongoose} 	= require('./db/mongoose'),
 	{User}		= require('./model/user');
 
 const {ObjectId} = require("mongodb");
-const port  = process.env.PORT;
+const port  = process.env.PORT || 3000;
 var app = express();
 // console.log("MONGOSE \n", mongoose);
 
@@ -33,6 +33,7 @@ app.post('/todos', (req,res)=>{
 
 
 app.get('/todos', (req,res)=>{
+	console.log("123")
 	Todo.find()
 	.then((todos)=>{
 		res.send({
@@ -42,11 +43,9 @@ app.get('/todos', (req,res)=>{
 	.catch((err)=> {
 		res.status(404).send(err);
 	})
-})
+});
 
-app.listen(3000, ()=>{
-	console.log("Server on port 3000...")
-})
+
 
 app.get('/todos/:id', (req,res)=> {
 	// res.send(req.params);
@@ -64,9 +63,30 @@ app.get('/todos/:id', (req,res)=> {
 			console.log("in error", err)
 			res.status(400).send(err);
 		})
-})
+});
 
+app.delete('/todos/:id',(req, res)=> {
+	let id = req.params.id;
+	if(!ObjectId.isValid(id)){
+		return res.status(404).send({"message": "Not a valid Id"});
+	}
+	console.log("ID->",id)
+	Todo.findByIdAndRemove(id)
+	.then((sult)=>{
+		console.log("Object deleted",sult)
+		if(!sult)
+			return res.status(404).send({msg : "Not Found"})
+		res.send({todo : sult});
+	})
+	.catch((err)=>{
+		console.log("Error deleting",err)
+		res.status(400).send(err);
+	})
+});
 
+app.listen(3000,()=>{
+	console.log("Server on port 3000...",port)
+});
 
 module.exports = {app};
 
@@ -145,3 +165,4 @@ newTodo1.save()
 		.catch((err)=>{
 			console.log(`Error - ->${err}`);	
 		});		*/
+
