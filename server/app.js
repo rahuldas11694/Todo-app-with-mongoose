@@ -5,6 +5,8 @@ var {mongoose} 	= require('./db/mongoose'),
 	{Todo} 		= require('./model/todo'),
 	{User}		= require('./model/user');
 
+const {ObjectId} = require("mongodb");
+
 var app = express();
 // console.log("MONGOSE \n", mongoose);
 
@@ -45,6 +47,26 @@ app.get('/todos', (req,res)=>{
 app.listen(3000, ()=>{
 	console.log("Server on port 3000...")
 })
+
+app.get('/todos/:id', (req,res)=> {
+	// res.send(req.params);
+	var id = req.params.id;
+	console.log('ID--->',id)
+	if(!ObjectId.isValid(id)){
+		return res.status(404).send({"message": "Not a valid Id"});
+	}
+	Todo.findById(id)
+		.then((todo)=>{
+			console.log("IN then",todo)
+			res.send({todo});
+		})
+		.catch((err)=>{
+			console.log("in error", err)
+			res.status(400).send(err);
+		})
+})
+
+
 
 module.exports = {app};
 
