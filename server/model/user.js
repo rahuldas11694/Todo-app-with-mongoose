@@ -75,7 +75,7 @@ UserSchema.statics.findOneByToken = function(token){
 		/*return new Promise((resolve,reject)=>{
 			reject();
 		})*/
-		return Promise.reject(null);
+		return Promise.reject(err);
 	}
 	console.log("DECODED ->",decoded)
 	return User.findOne({

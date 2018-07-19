@@ -5,12 +5,14 @@ var {mongoose} 	= require('./db/mongoose'),
 	{Todo} 		= require('./model/todo'),
 	{User}		= require('./model/user');
 var _ 			= require('lodash');
+
+var {authenticate} = require('./middleware/authenticate')
+
 var config = require('./config/config.js');
 console.log("env----->",env)
 const {ObjectId} = require("mongodb");
 const port  = process.env.PORT || 3000;
 var app = express();
-// console.log("MONGOSE \n", mongoose);
 
 app.use(bodyParser.json());
 
@@ -144,7 +146,7 @@ app.post('/users', (req,res) =>{
 
 })
 
-app.get('/users/me', (req, res)=>{
+/*app.get('/users/me',(req, res)=>{
 	var token = req.header('x-auth');
 	User.findOneByToken(token).then((user) => {
 		if(!user){
@@ -155,7 +157,15 @@ app.get('/users/me', (req, res)=>{
 	.catch(()=>{
 		res.status(401).send({msg: ""});
 	})
+})*/
+
+
+//calling middleware for following route 
+// it will execute this before callback
+app.get('/users/me',authenticate,(req, res)=>{
+	return res.send(req.user);
 })
+
 
 app.listen(3000,()=>{
 	console.log("Server on port 3000...",port)
