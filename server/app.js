@@ -120,6 +120,30 @@ app.patch('/todos/:id',(req,res)=>{
 	})
 })
 
+
+app.post('/users', (req,res) =>{
+	var body = _.pick(req.body, ['email','password']);
+	// console.log("BODY", req.body);
+
+	var user = new User(body);
+
+	user.save()
+	.then((user)=>{
+		console.log("User result")
+		return user.generateAuthToken(user);
+		// res.send({user})
+	})
+	.then((token) => {
+		console.log("IN THEN", token)
+		res.header('x-auth', token).send(user);
+	})
+	.catch((err)=>{
+		console.log("Error  - >",err)
+		res.send({err});;
+	})
+
+})
+
 app.listen(3000,()=>{
 	console.log("Server on port 3000...",port)
 });
