@@ -144,6 +144,19 @@ app.post('/users', (req,res) =>{
 
 })
 
+app.get('/users/me', (req, res)=>{
+	var token = req.header('x-auth');
+	User.findOneByToken(token).then((user) => {
+		if(!user){
+			return Promise.reject();
+		}
+		return res.send({user});
+	})
+	.catch(()=>{
+		res.status(401).send({msg: ""});
+	})
+})
+
 app.listen(3000,()=>{
 	console.log("Server on port 3000...",port)
 });
