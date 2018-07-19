@@ -30,7 +30,7 @@
 // 	console.log("NOT EQUALS");	
 // }
 
-var jwt = require('jsonwebtoken');
+/*var jwt = require('jsonwebtoken');
 
 // jwt.sign = "rahuls"
 // jwt.verify = 
@@ -45,9 +45,19 @@ console.log("TOKEN : ", token);
 var deToken = jwt.verify(token,'qwerty');
 
 console.log("DE-TOKEN : ", deToken);
+*/
 
+var bcrypt = require('bcryptjs');
 
+var password = "123123";
+bcrypt.genSalt(10,(err,salt)=>{
+	bcrypt.hash(password, salt, (err, hash)=>{
+		console.log(`HASH: ${hash}`)
+	})
+})
 
+var hashedPass = '$2a$10$Nnhdn/Y2LgBcIfVaqEcnfeSkFepH93.Le/nROlEap0wFufCbMjqp6';
 
-
-
+bcrypt.compare(password, hashedPass, (err, res)=>{
+	console.log("REsult", res);
+})
