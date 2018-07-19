@@ -3,13 +3,15 @@ var request = require("supertest");
 
 var {app} = require("./../app");
 var {Todo} = require("./../model/todo");
+const {todos,populateTodos,users,populateUsers} = require('./seeds/seed');
+// console.log("-------",populateUsers,'--\n--',users,'---\n---',todos,'--\n---',populateTodos)
 
 
-beforeEach((done)=>{
-	Todo.remove({}).then(() => done());
-})
 
-describe("POST /todos,",()=> {
+beforeEach(populateUsers);
+// beforeEach(populateTodos);
+
+/*describe("POST /todos,",()=> {
 	it("# should create a new todo", (done)=> {
 		var text = "qwe";
 
@@ -62,6 +64,27 @@ describe("POST /todos,",()=> {
 
 		})
 	})
+
+});*/
+console.log("asdasd",users[0])
+describe('# GET /user/me', ()=>{
+	it('should return user if authenticated',(done)=>{
+		request(app)
+		.get('/user/me')
+		.set('x-auth',users[0].tokens[0].token)
+		.expect(200)
+		.expect((res)=>{
+			expect(res.body._id).toBe(users[0]._id);
+			expect(res.body.email).toBe(users[0].email);
+			done()
+		})
+		.end(done)
+		done()
+	});
+
+	// it('should return 401 if user is not authenticated',(done)=>{
+
+	// });
 
 })
 

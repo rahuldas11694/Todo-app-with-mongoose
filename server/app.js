@@ -164,12 +164,33 @@ app.post('/users', (req,res) =>{
 // it will execute this before callback
 app.get('/users/me',authenticate,(req, res)=>{
 	return res.send(req.user);
+});
+
+
+app.post('/users/login', (req, res) => {
+	var body = _.pick(req.body, ['email','password']);
+	
+	User.findByCredentials(body.email, body.password)
+	.then((user)=>{
+
+		return user.generateAuthToken().then((token)=>{
+			res.header('x-auth',token).send(user);
+		})
+		// res.send(user); 
+	})
+	.catch((e)=>{
+		res.status(400).send(e)
+	})
+
 })
 
 
 app.listen(3000,()=>{
 	console.log("Server on port 3000...",port)
 });
+
+
+
 
 module.exports = {app};
 
