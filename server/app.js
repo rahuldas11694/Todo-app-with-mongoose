@@ -184,6 +184,17 @@ app.post('/users/login', (req, res) => {
 
 })
 
+app.delete('/users/me/token',authenticate,(req,res)=>{
+	console.log("RESPONSE.USER",req.user)
+	req.user.removeToken(req.token)
+		.then((user)=>{
+			res.status(200).send({user});
+		})
+		.catch((err)=>{
+			res.status(400).send({err});
+		})
+})
+
 
 app.listen(3000,()=>{
 	console.log("Server on port 3000...",port)

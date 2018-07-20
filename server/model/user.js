@@ -106,6 +106,18 @@ UserSchema.statics.findByCredentials = function(email,password){
 	})
 }
 
+UserSchema.methods.removeToken = function(token){
+	var user = this;
+	// console.log("=====",user);
+	return user.update({
+		$pull : {
+			tokens : {token}
+		}
+	});
+	// return {};
+
+}
+
 // this is a mongoose middleware which executes before savin data to DB
 UserSchema.pre('save', function(next){
 	var user = this;
